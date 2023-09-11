@@ -24,7 +24,7 @@ export default async function DashboardLayout({
       userId,
     },
   });
-
+  
   if (!store) {
     redirect("/");
   }
