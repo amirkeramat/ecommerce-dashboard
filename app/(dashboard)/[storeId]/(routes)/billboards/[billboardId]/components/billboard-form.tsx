@@ -49,7 +49,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const title = initialData ? "Edit Billboard" : "Create Billboard";
   const description = initialData ? "Edit a  Billboard" : "Add a Billboard";
   const toastMessage = initialData ? "Billboard updated" : "Billboard created.";
-  const action = initialData ? "Save changes" : "Create.";
+  const action = initialData ? "Save changes" : "Create";
 
   const from = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
@@ -62,9 +62,17 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const onSubmit = async (values: BillboardFormValues) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/stores/${params.storeId}`, values);
+      if (initialData) {
+        await axios.patch(
+          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          values
+        );
+      } else {
+        await axios.post(`/api/${params.storeId}/billboards`, values);
+      }
       router.refresh();
-      toast.success("Store updated successfully");
+      router.push(`/${params.storeId}/billboards`)
+      toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
@@ -75,12 +83,16 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/stores/${params.storeId}`);
+      await axios.delete(
+        `/api/${params.storeId}/billboards/${params.billboardId}`
+      );
       router.refresh();
       router.push("/");
-      toast.success("store delete successfully");
+      toast.success("Billboard delete successfully");
     } catch (error) {
-      toast.error("Make sure you removed all products and categories first.");
+      toast.error(
+        "Make sure you removed all  categories using this billboard first."
+      );
     } finally {
       setLoading(false);
       setOpen(false);
@@ -116,16 +128,16 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
         >
           <FormField
             control={from.control}
-            name="label"
+            name="imageUrl"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Background Image</FormLabel>
                 <FormControl>
-                  <ImageUpload 
+                  <ImageUpload
                     value={field.value ? [field.value] : []}
                     disabled={loading}
-                    onChange={(url)=>field.onChange(url)}
-                    onRemove={()=>field.onChange("")}
+                    onChange={(url) => field.onChange(url)}
+                    onRemove={() => field.onChange("")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -138,7 +150,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
               name="label"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Label</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
@@ -152,16 +164,11 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
             />
           </div>
           <Button disabled={loading} type="submit" className="ml-auto">
-            Save changes
+            {action}
           </Button>
         </form>
       </Form>
       <Separator />
-      <ApiAlert
-        title="NEXT_PUBLIC_API_URL"
-        description={`${origin}/api/${params.storeId}`}
-        variant="public"
-      />
     </>
   );
 };
