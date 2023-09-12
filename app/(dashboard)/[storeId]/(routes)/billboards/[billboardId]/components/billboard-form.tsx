@@ -25,6 +25,7 @@ import axios from "axios";
 import AlertModal from "@/components/modals/alert-modal";
 import ApiAlert from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
+import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
   label: z.string().min(1),
@@ -96,14 +97,16 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
       />
       <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
-        <Button
-          variant="destructive"
-          size="icon"
-          onClick={() => setOpen(true)}
-          disabled={loading}
-        >
-          <Trash className="w-4 h-4" />
-        </Button>
+        {initialData && (
+          <Button
+            variant="destructive"
+            size="icon"
+            onClick={() => setOpen(true)}
+            disabled={loading}
+          >
+            <Trash className="w-4 h-4" />
+          </Button>
+        )}
       </div>
       <Separator />
       <Form {...from}>
@@ -111,10 +114,28 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
           onSubmit={from.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
+          <FormField
+            control={from.control}
+            name="label"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Background Image</FormLabel>
+                <FormControl>
+                  <ImageUpload 
+                    value={field.value ? [field.value] : []}
+                    disabled={loading}
+                    onChange={(url)=>field.onChange(url)}
+                    onRemove={()=>field.onChange("")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-5 gap-8">
             <FormField
               control={from.control}
-              name="name"
+              name="label"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
