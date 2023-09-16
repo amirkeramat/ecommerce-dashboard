@@ -20,28 +20,26 @@ export async function PATCH(
       return new NextResponse("Name is required", { status: 400 });
     }
 
-    if(!params.storeId){
-        return new NextResponse("Store is required",{status:400})
+    if (!params.storeId) {
+      return new NextResponse("Store is required", { status: 400 });
     }
 
     const store = await prismadb.store.updateMany({
-        where:{
-            id:params.storeId,
-            userId
-        },
-        data:{
-            name
-        }
-    })
+      where: {
+        id: params.storeId,
+        userId,
+      },
+      data: {
+        name,
+      },
+    });
 
-    return NextResponse.json(store)
-
+    return NextResponse.json(store);
   } catch (error) {
     console.log("[STORE_PATCH]", error);
     return new NextResponse("Internal error", { status: 500 });
-  } 
+  }
 }
-
 
 export async function DELETE(
   req: Request,
@@ -62,7 +60,7 @@ export async function DELETE(
       where: {
         id: params.storeId,
         userId,
-      }
+      },
     });
 
     return NextResponse.json(store);
