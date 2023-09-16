@@ -88,7 +88,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { storeId: string,billBoardId:string } }
+  { params }: { params: { storeId: string,billboardId:string } }
 ) {
   try {
     const { userId } = auth();
@@ -97,7 +97,7 @@ export async function DELETE(
       return new NextResponse("Unauthenticated", { status: 401 });
     }
 
-    if (!params.billBoardId) {
+    if (!params.billboardId) {
       return new NextResponse("billboard is required", { status: 400 });
     }
 
@@ -114,7 +114,7 @@ export async function DELETE(
 
     const billboard = await prismadb.billboard.deleteMany({
       where: {
-        id: params.billBoardId,
+        id: params.billboardId,
       },
     });
 
