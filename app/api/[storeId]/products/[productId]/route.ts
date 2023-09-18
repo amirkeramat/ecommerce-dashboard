@@ -7,11 +7,6 @@ export async function GET(
   { params }: { params: { productId: string } }
 ) {
   try {
-    const { userId } = auth();
-
-    if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
 
     if (!params.productId) {
       return new NextResponse("Product Id is required", { status: 400 });
@@ -111,7 +106,7 @@ export async function PATCH(
       },
     });
 
-    const product = prismadb.product.update({
+    const product =await prismadb.product.update({
       where: {
         id: params.productId,
       },

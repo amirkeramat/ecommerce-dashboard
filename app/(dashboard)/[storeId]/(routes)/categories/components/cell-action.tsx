@@ -37,10 +37,10 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
       router.refresh();
-      toast.success("Billboard delete successfully");
+      toast.success("Category delete successfully");
     } catch (error) {
       toast.error(
-        "Make sure you removed all  categories using this billboard first."
+        "Make sure you removed all  billboards using this category first."
       );
     } finally {
       setLoading(false);

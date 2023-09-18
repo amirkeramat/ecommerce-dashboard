@@ -49,9 +49,9 @@ type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
   initialData:
-    | (Product & {
+     Product & {
         images: Image[];
-      })
+      }
     | null;
   categories: Category[];
   colors: Color[];
@@ -75,21 +75,26 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const toastMessage = initialData ? "Product updated" : "Product created.";
   const action = initialData ? "Save changes" : "Create";
 
-  const from = useForm<ProductFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: initialData
-      ? { ...initialData, price: parseFloat(String(initialData?.price)) }
-      : {
-          name: "",
-          images: [],
-          price: 0,
-          categoryId: "",
-          colorId: "",
-          sizeId: "",
-          isFeatured: false,
-          isArchived: false,
-        },
-  });
+  const defaultValues = initialData
+    ? {
+        ...initialData,
+        price: parseFloat(String(initialData?.price)),
+      }
+    : {
+        name: "",
+        images: [],
+        price: 0,
+        categoryId: "",
+        colorId: "",
+        sizeId: "",
+        isFeatured: false,
+        isArchived: false,
+      };
+
+   const form = useForm<ProductFormValues>({
+     resolver: zodResolver(formSchema),
+     defaultValues,
+   });
 
   const onSubmit = async (values: ProductFormValues) => {
     try {
@@ -151,13 +156,13 @@ const ProductForm: React.FC<ProductFormProps> = ({
         )}
       </div>
       <Separator />
-      <Form {...from}>
+      <Form {...form}>
         <form
-          onSubmit={from.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
           <FormField
-            control={from.control}
+            control={form.control}
             name="images"
             render={({ field }) => (
               <FormItem>
@@ -182,7 +187,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           />
           <div className="grid grid-cols-3 gap-8">
             <FormField
-              control={from.control}
+              control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
@@ -199,7 +204,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               )}
             />
             <FormField
-              control={from.control}
+              control={form.control}
               name="price"
               render={({ field }) => (
                 <FormItem>
@@ -217,7 +222,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               )}
             />
             <FormField
-              control={from.control}
+              control={form.control}
               name="categoryId"
               render={({ field }) => (
                 <FormItem>
@@ -249,7 +254,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               )}
             />
             <FormField
-              control={from.control}
+              control={form.control}
               name="sizeId"
               render={({ field }) => (
                 <FormItem>
@@ -281,7 +286,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               )}
             />
             <FormField
-              control={from.control}
+              control={form.control}
               name="colorId"
               render={({ field }) => (
                 <FormItem>
@@ -319,7 +324,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               )}
             />
             <FormField
-              control={from.control}
+              control={form.control}
               name="isFeatured"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
@@ -341,7 +346,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               )}
             />
             <FormField
-              control={from.control}
+              control={form.control}
               name="isArchived"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">

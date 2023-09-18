@@ -7,11 +7,6 @@ export async function GET(
   { params }: { params: { colorId: string } }
 ) {
   try {
-    const { userId } = auth();
-
-    if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 401 });
-    }
 
     if (!params.colorId) {
       return new NextResponse("Color Id is required", { status: 400 });
