@@ -20,6 +20,7 @@ model store {
   colors     Color[]     @relation("StoreToColor")
   products   Product[]   @relation("StoreToProduct")
   orders     Order[]     @relation("StoreToOrder")
+  banners    Banner[]    @relation("StoreToBanner")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
@@ -35,6 +36,17 @@ model Billboard {
   updatedAt  DateTime   @updatedAt
 
   @@index([storeId])
+}
+
+model Banner {
+  id        String   @id @default(uuid())
+  storeId   String
+  store     store    @relation("StoreToBanner", fields: [storeId], references: [id])
+  label     String
+  imageUrl  String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
@@ -116,7 +128,7 @@ model Image {
 
 model Order {
   id         String      @id @default(uuid())
-  storeId    String      
+  storeId    String
   store      store       @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[]
   isPaid     Boolean     @default(false)
