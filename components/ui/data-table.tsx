@@ -57,7 +57,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
+    <div className="w-full relative overflow-hidden px-2">
       <div className="flex items-center py-4">
         <Input
           placeholder={`Filter by ${searchKey}`}

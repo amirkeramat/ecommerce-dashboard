@@ -3,6 +3,8 @@ import { prismadb } from "@/lib/prismadb";
 
 import ColorsClient from "./components/client";
 import { ColorColumn } from "./components/columns";
+import { Suspense } from "react";
+import Loading from "../../loading";
 const SizesPage = async ({ params }: { params: { storeId: string } }) => {
   const colors = await prismadb.color.findMany({
     where: {
@@ -23,8 +25,10 @@ const SizesPage = async ({ params }: { params: { storeId: string } }) => {
   return (
     <>
       <div className="flex-col">
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <ColorsClient data={formattedColors} />
+        <div className="flex-1 space-y-4 px-2 md:p-8 pt-6">
+          <Suspense fallback={<Loading />}>
+            <ColorsClient data={formattedColors} />
+          </Suspense>
         </div>
       </div>
     </>

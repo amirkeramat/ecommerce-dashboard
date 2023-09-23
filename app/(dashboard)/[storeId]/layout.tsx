@@ -1,9 +1,9 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import React from "react";
-
+import React, { Suspense } from "react";
 import { prismadb } from "@/lib/prismadb";
 import Navbar from "@/components/navbar";
+import Loading from "./loading";
 
 export default async function DashboardLayout({
   children,
@@ -32,7 +32,7 @@ export default async function DashboardLayout({
   return (
     <>
       <Navbar />
-      {children}
+      <Suspense fallback={<Loading />}>{children}</Suspense>
     </>
   );
 }
