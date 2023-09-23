@@ -141,7 +141,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-5 gap-8">
+          <div className="grid  lg:grid-cols-5 gap-8">
             <FormField
               control={from.control}
               name="label"

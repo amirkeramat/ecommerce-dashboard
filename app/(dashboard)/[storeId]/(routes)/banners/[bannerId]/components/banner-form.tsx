@@ -143,7 +143,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             <FormField
               control={form.control}
               name="label"
