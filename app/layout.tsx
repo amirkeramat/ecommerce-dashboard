@@ -12,6 +12,7 @@ import NextTopLoader from "nextjs-toploader";
 const inter = Inter({ subsets: ["latin"] });
 
 import "./globals.css";
+import Container from "@/components/ui/container";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -27,17 +28,19 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <NextTopLoader height={5}/>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ToastProvider />
-            <ModalProvider />
-            {children}
-          </ThemeProvider>
+          <Container>
+            <NextTopLoader height={5} />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <ToastProvider />
+              <ModalProvider />
+              {children}
+            </ThemeProvider>
+          </Container>
         </body>
       </html>
     </ClerkProvider>
